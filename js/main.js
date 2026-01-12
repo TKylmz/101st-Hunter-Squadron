@@ -1,0 +1,255 @@
+/**
+ * 101st Hunter Squadron - Interactive Features
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Elements
+    const intro = document.getElementById('intro');
+    const navbar = document.getElementById('navbar');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const revealElements = document.querySelectorAll('.reveal');
+    const parallaxSections = document.querySelectorAll('.parallax-section');
+
+    // =====================================================
+    // INTRO ANIMATION
+    // =====================================================
+    if (intro) {
+        // Lock body during intro
+        document.body.classList.add('intro-active');
+
+        // Hide intro after animation completes
+        setTimeout(() => {
+            intro.classList.add('hidden');
+            document.body.classList.remove('intro-active');
+        }, 3000); // 3 seconds for full animation
+    }
+
+    // =====================================================
+    // PARALLAX BACKGROUNDS SETUP
+    // =====================================================
+    parallaxSections.forEach(section => {
+        const bg = section.querySelector('.parallax-bg');
+        const bgImage = section.dataset.bg;
+        if (bg && bgImage) {
+            bg.style.backgroundImage = `url('${bgImage}')`;
+        }
+    });
+
+    // =====================================================
+    // SMOOTH PARALLAX SCROLLING (using requestAnimationFrame)
+    // =====================================================
+    let ticking = false;
+
+    const updateParallax = () => {
+        const scrolled = window.pageYOffset;
+
+        // Hero parallax (smoother)
+        const heroBg = document.querySelector('.hero-bg img');
+        if (heroBg && scrolled < window.innerHeight * 1.5) {
+            const rate = scrolled * 0.4;
+            heroBg.style.transform = `translate3d(0, ${rate}px, 0)`;
+        }
+
+        // Section parallax backgrounds - VISIBLE MOVEMENT
+        parallaxSections.forEach(section => {
+            const bg = section.querySelector('.parallax-bg');
+            if (bg) {
+                const rect = section.getBoundingClientRect();
+                // Calculate how far into view the section is (0 when at bottom, 1 when at top)
+                const viewportHeight = window.innerHeight;
+                const sectionVisibility = 1 - (rect.top / viewportHeight);
+                // Move background at different speed - creates parallax effect
+                const parallaxSpeed = 0.5; // Higher = more movement
+                const offset = rect.top * parallaxSpeed;
+                bg.style.transform = `translate3d(0, ${offset}px, 0)`;
+            }
+        });
+
+
+        ticking = false;
+    };
+
+    const onScroll = () => {
+        if (!ticking) {
+            requestAnimationFrame(updateParallax);
+            ticking = true;
+        }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateParallax(); // Initial call
+
+    // =====================================================
+    // NAVBAR SCROLL EFFECT
+    // =====================================================
+    const handleNavbarScroll = () => {
+        const currentScroll = window.pageYOffset;
+
+        if (currentScroll > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    };
+
+    window.addEventListener('scroll', handleNavbarScroll);
+    handleNavbarScroll();
+
+    // =====================================================
+    // MOBILE MENU TOGGLE
+    // =====================================================
+    navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+
+    // =====================================================
+    // SMOOTH SCROLLING
+    // =====================================================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
+
+            if (target) {
+                const navHeight = navbar.offsetHeight;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // =====================================================
+    // SCROLL REVEAL ANIMATIONS
+    // =====================================================
+    const revealOnScroll = () => {
+        const windowHeight = window.innerHeight;
+
+        revealElements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const revealPoint = 150;
+
+            if (elementTop < windowHeight - revealPoint) {
+                element.classList.add('active');
+            }
+        });
+    };
+
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll();
+
+    // =====================================================
+    // GALLERY LIGHTBOX
+    // =====================================================
+    galleryItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const img = item.querySelector('img');
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    const closeLightbox = () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    };
+
+    lightboxClose.addEventListener('click', closeLightbox);
+
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+            closeLightbox();
+        }
+    });
+
+    // =====================================================
+    // ACTIVE NAV LINK ON SCROLL
+    // =====================================================
+    const sections = document.querySelectorAll('section[id]');
+
+    const highlightNavLink = () => {
+        const scrollY = window.pageYOffset;
+
+        sections.forEach(section => {
+            const sectionHeight = section.offsetHeight;
+            const sectionTop = section.offsetTop - 100;
+            const sectionId = section.getAttribute('id');
+            const navLink = document.querySelector(`.nav-links a[href="#${sectionId}"]`);
+
+            if (navLink) {
+                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                    navLink.style.color = 'var(--color-accent-gold)';
+                } else {
+                    navLink.style.color = '';
+                }
+            }
+        });
+    };
+
+    window.addEventListener('scroll', highlightNavLink);
+
+    // =====================================================
+    // DRAGON FIRE CURSOR TRAIL (Easter Egg)
+    // =====================================================
+    const createFireParticle = (x, y) => {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #ff6b35, #ff4500);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 1;
+            transition: all 0.5s ease-out;
+        `;
+        document.body.appendChild(particle);
+
+        requestAnimationFrame(() => {
+            particle.style.opacity = '0';
+            particle.style.transform = `translateY(-20px) scale(0)`;
+        });
+
+        setTimeout(() => particle.remove(), 500);
+    };
+
+    const heroDragon = document.querySelector('.hero-dragon');
+    if (heroDragon) {
+        heroDragon.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.7) {
+                createFireParticle(e.clientX, e.clientY);
+            }
+        });
+    }
+
+    console.log('%c🔥 101st Hunter Squadron 🔥', 'color: #d4a020; font-size: 24px; font-weight: bold;');
+    console.log('%cThere are 2 types of squadrons; Hunters and our targets.', 'color: #ff6b35; font-size: 14px;');
+});
