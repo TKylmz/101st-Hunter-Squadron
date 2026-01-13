@@ -4,14 +4,14 @@
 
 // Configuration - Update this with Onur's server details
 const SERVER_CONFIG = {
-    // The endpoint URL - update this when Onur sets up the API
-    apiUrl: null, // e.g., 'http://your-server-ip:5000/api/status'
+    // The endpoint URL for the simple status server
+    apiUrl: 'http://88.247.164.234:5050/status',
 
     // Refresh interval in milliseconds
     refreshInterval: 30000, // 30 seconds
 
-    // Demo mode - set to false when real API is available
-    demoMode: true
+    // Demo mode - set to false for real API
+    demoMode: false
 };
 
 // Demo data for testing (will show when demoMode is true)
@@ -92,14 +92,14 @@ async function fetchServerStatus() {
 
         const data = await response.json();
         updateServerStatus({
-            online: true,
-            serverName: data.name || '101st Hunter Squadron',
-            mission: data.mission || data.mission_name,
-            map: data.map || data.theatre,
-            players: data.players || data.player_count,
-            maxPlayers: data.max_players || 32,
-            missionTime: data.mission_time || data.time,
-            playerList: data.player_list || data.players_list || []
+            online: data.online !== false, // Use API's online status
+            serverName: data.serverName || data.name || '101st Hunter Squadron',
+            mission: data.mission || data.mission_name || '--',
+            map: data.map || data.theatre || '--',
+            players: data.players || data.player_count || 0,
+            maxPlayers: data.maxPlayers || data.max_players || 32,
+            missionTime: data.missionTime || data.mission_time || data.time || '--:--',
+            playerList: data.playerList || data.player_list || data.players_list || []
         });
     } catch (error) {
         console.log('Server status fetch failed:', error);
