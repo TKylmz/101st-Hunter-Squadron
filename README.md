@@ -44,9 +44,9 @@ We're actively recruiting motivated pilots! Requirements:
 
 ## License
 
-The code is licensed under MIT License. See [LICENSE](LICENSE) for details.
+**All Rights Reserved** © 2025 101st Hunter Squadron
 
-Squadron branding, logos, images, and content are © 2025 101st Hunter Squadron. All Rights Reserved.
+This project and all its contents are protected by copyright. No part of this work may be copied, modified, distributed, or used without explicit written permission. See [LICENSE](LICENSE) for full details.
 
 ---
 
