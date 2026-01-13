@@ -69,6 +69,17 @@ const translations = {
         recruit_teamwork_desc: "Work well with others and contribute positively to the squadron culture.",
         recruit_apply: "Apply on Discord",
 
+        // Server Status Section
+        server_subtitle: "Live Server",
+        server_title: "Server Status",
+        server_checking: "Checking...",
+        server_loading: "Loading mission data...",
+        server_map: "Current Map",
+        server_players: "Players Online",
+        server_time: "Mission Time",
+        server_player_list: "Online Pilots",
+        server_note: "Server data updates every 30 seconds. Join our Discord for real-time updates!",
+
         // Footer
         footer_copyright: '© 2025 101st Hunter Squadron. All rights reserved.<br><em>"There are 2 types of squadrons; Hunters and our targets."</em>'
     },
@@ -138,6 +149,17 @@ const translations = {
         recruit_teamwork_title: "Takım Çalışması",
         recruit_teamwork_desc: "Başkalarıyla iyi çalışın ve filo kültürüne olumlu katkıda bulunun.",
         recruit_apply: "Discord'dan Başvur",
+
+        // Server Status Section
+        server_subtitle: "Canlı Sunucu",
+        server_title: "Sunucu Durumu",
+        server_checking: "Kontrol ediliyor...",
+        server_loading: "Görev verileri yükleniyor...",
+        server_map: "Mevcut Harita",
+        server_players: "Çevrimiçi Pilotlar",
+        server_time: "Görev Süresi",
+        server_player_list: "Çevrimiçi Pilotlar",
+        server_note: "Sunucu verileri her 30 saniyede güncellenir. Gerçek zamanlı güncellemeler için Discord'umuza katılın!",
 
         // Footer
         footer_copyright: '© 2025 101. Avcı Filosu. Tüm hakları saklıdır.<br><em>"İki tür filo vardır; Avcılar ve hedeflerimiz."</em>'

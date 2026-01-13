@@ -163,6 +163,65 @@
         </div>
     </section>
 
+    <!-- Server Status Section -->
+    <section class="server-status section" id="server-status">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-subtitle" data-i18n="server_subtitle">Live Server</span>
+                <h2 class="section-title" data-i18n="server_title">Server Status</h2>
+            </div>
+
+            <div class="status-grid">
+                <!-- Server Status Card -->
+                <div class="status-card status-main reveal">
+                    <div class="status-indicator" id="serverIndicator">
+                        <span class="status-dot"></span>
+                        <span class="status-text" id="serverStatusText" data-i18n="server_checking">Checking...</span>
+                    </div>
+                    <h3 class="server-name">101st Hunter Squadron</h3>
+                    <p class="server-mission" id="serverMission" data-i18n="server_loading">Loading mission data...</p>
+                </div>
+
+                <!-- Map Card -->
+                <div class="status-card status-map reveal">
+                    <div class="map-icon">🗺️</div>
+                    <div class="map-info">
+                        <span class="map-label" data-i18n="server_map">Current Map</span>
+                        <span class="map-name" id="serverMap">--</span>
+                    </div>
+                </div>
+
+                <!-- Players Card -->
+                <div class="status-card status-players reveal">
+                    <div class="players-icon">👥</div>
+                    <div class="players-info">
+                        <span class="players-label" data-i18n="server_players">Players Online</span>
+                        <span class="players-count" id="serverPlayers">--</span>
+                    </div>
+                </div>
+
+                <!-- Mission Time Card -->
+                <div class="status-card status-time reveal">
+                    <div class="time-icon">⏰</div>
+                    <div class="time-info">
+                        <span class="time-label" data-i18n="server_time">Mission Time</span>
+                        <span class="time-value" id="serverTime">--:--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Player List (expandable) -->
+            <div class="player-list-container reveal" id="playerListContainer" style="display: none;">
+                <h4 data-i18n="server_player_list">Online Pilots</h4>
+                <div class="player-list" id="playerList"></div>
+            </div>
+
+            <p class="status-note reveal" data-i18n="server_note">
+                Server data updates every 30 seconds. Join our Discord for real-time updates!
+            </p>
+        </div>
+    </section>
+
     <!-- Operations Section -->
     <section class="operations section parallax-section" id="operations" data-bg="assets/images/gallery-2.jpg">
         <div class="parallax-bg"></div>
@@ -405,6 +464,7 @@
 
     <!-- JavaScript -->
     <script src="js/translations.js"></script>
+    <script src="js/serverStatus.js"></script>
     <script src="js/main.js"></script>
 </body>
 
