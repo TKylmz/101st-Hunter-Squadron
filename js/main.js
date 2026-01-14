@@ -214,41 +214,74 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', highlightNavLink);
 
     // =====================================================
-    // DRAGON FIRE CURSOR TRAIL (Easter Egg)
+    // FIRE CURSOR TRAIL EFFECT
     // =====================================================
-    const createFireParticle = (x, y) => {
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let mouseThrottle = 0;
+
+    const createCursorFireParticle = (x, y) => {
         const particle = document.createElement('div');
+        const size = 4 + Math.random() * 8;
+        const hue = 15 + Math.random() * 35; // Orange to gold
+        const offsetX = (Math.random() - 0.5) * 10;
+        const offsetY = (Math.random() - 0.5) * 10;
+        const floatY = -30 - Math.random() * 40; // Float upward
+        const floatX = (Math.random() - 0.5) * 30; // Slight horizontal drift
+
         particle.style.cssText = `
             position: fixed;
-            left: ${x}px;
-            top: ${y}px;
-            width: 8px;
-            height: 8px;
-            background: radial-gradient(circle, #ff6b35, #ff4500);
+            left: ${x + offsetX}px;
+            top: ${y + offsetY}px;
+            width: ${size}px;
+            height: ${size}px;
+            background: radial-gradient(circle, 
+                hsl(${hue + 20}, 100%, 80%) 0%, 
+                hsl(${hue}, 100%, 55%) 40%, 
+                hsl(${hue - 15}, 100%, 35%) 100%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            opacity: 1;
-            transition: all 0.5s ease-out;
+            opacity: 0.9;
+            box-shadow: 0 0 ${size * 1.5}px hsl(${hue}, 100%, 50%),
+                        0 0 ${size * 3}px hsl(${hue}, 80%, 40%);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         `;
         document.body.appendChild(particle);
 
+        // Animate floating up and fading
         requestAnimationFrame(() => {
             particle.style.opacity = '0';
-            particle.style.transform = `translateY(-20px) scale(0)`;
+            particle.style.transform = `translate(${floatX}px, ${floatY}px) scale(0.2)`;
         });
 
-        setTimeout(() => particle.remove(), 500);
+        setTimeout(() => particle.remove(), 600);
     };
 
-    const heroDragon = document.querySelector('.hero-dragon');
-    if (heroDragon) {
-        heroDragon.addEventListener('mousemove', (e) => {
-            if (Math.random() > 0.7) {
-                createFireParticle(e.clientX, e.clientY);
+    // Global mouse move listener for fire trail
+    document.addEventListener('mousemove', (e) => {
+        mouseThrottle++;
+
+        // Only create particles every 3rd mouse event for performance
+        if (mouseThrottle % 3 !== 0) return;
+
+        // Calculate mouse speed for intensity
+        const dx = e.clientX - lastMouseX;
+        const dy = e.clientY - lastMouseY;
+        const speed = Math.sqrt(dx * dx + dy * dy);
+
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+
+        // Only create particles when moving (speed > threshold)
+        if (speed > 5) {
+            // More particles for faster movement
+            const particleCount = Math.min(Math.floor(speed / 15) + 1, 3);
+            for (let i = 0; i < particleCount; i++) {
+                createCursorFireParticle(e.clientX, e.clientY);
             }
-        });
-    }
+        }
+    }, { passive: true });
 
     console.log('%c🔥 101st Hunter Squadron 🔥', 'color: #d4a020; font-size: 24px; font-weight: bold;');
     console.log('%cThere are 2 types of squadrons; Hunters and our targets.', 'color: #ff6b35; font-size: 14px;');
