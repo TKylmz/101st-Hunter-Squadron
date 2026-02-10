@@ -5,7 +5,7 @@
 // Configuration - Update this with Onur's server details
 const SERVER_CONFIG = {
     // The endpoint URL via Cloudflare Tunnel (HTTPS)
-    apiUrl: 'https://madrid-decade-brad-expense.trycloudflare.com/status',
+    apiUrl: 'https://cedar-privilege-mac-gel.trycloudflare.com/status',
 
     // Refresh interval in milliseconds
     refreshInterval: 30000, // 30 seconds
